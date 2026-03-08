@@ -56,13 +56,15 @@ class MyStrategy(IStrategy):
 
 ## Benchmark
 
-Tested on 100,000 OHLC rows (pytest-benchmark, best-of):
+Latest local `pytest-benchmark` result on 100,000 OHLC rows (min time):
 
 | Implementation | Min time | Relative |
 |---|---|---|
-| **freshmeat-heikinashi** (Numba) | **2.5 ms** | 1x |
-| `technical.candles.heikinashi` (list comp) | 867 ms | 343x slower |
-| `qtpylib.indicators.heikinashi` (for loop) | 4,619 ms | 1,830x slower |
+| **freshmeat-heikinashi** (Numba) | **1.65 ms** | 1x |
+| `technical.candles.heikinashi` (list comp) | 423.50 ms | 256x slower |
+| `qtpylib.indicators.heikinashi` (for loop) | 2,239.60 ms | 1,354x slower |
+
+The absolute values are machine-dependent, but the speedup pattern is consistent.
 
 Run the benchmarks yourself:
 
