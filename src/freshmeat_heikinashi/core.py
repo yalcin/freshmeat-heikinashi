@@ -18,21 +18,14 @@ def _heikinashi_arrays(
 
     The recursive HA formula uses only past data — no lookahead.
 
-    Parameters
-    ----------
-    open_ : np.ndarray
-        Open prices.
-    high : np.ndarray
-        High prices.
-    low : np.ndarray
-        Low prices.
-    close : np.ndarray
-        Close prices.
+    Args:
+        open_: Open prices.
+        high: High prices.
+        low: Low prices.
+        close: Close prices.
 
-    Returns
-    -------
-    tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]
-        ``(ha_open, ha_high, ha_low, ha_close)`` arrays.
+    Returns:
+        Tuple of ``(ha_open, ha_high, ha_low, ha_close)`` arrays.
     """
     n = len(open_)
     ha_open = np.empty(n, dtype=np.float64)
@@ -66,32 +59,21 @@ def heikinashi_arrays(
     Thin wrapper around the Numba-jitted kernel that validates input
     and ensures ``float64`` dtype.
 
-    Parameters
-    ----------
-    open_ : np.ndarray
-        Open prices.
-    high : np.ndarray
-        High prices.
-    low : np.ndarray
-        Low prices.
-    close : np.ndarray
-        Close prices.
+    Args:
+        open_: Open prices.
+        high: High prices.
+        low: Low prices.
+        close: Close prices.
 
-    Returns
-    -------
-    tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]
-        ``(ha_open, ha_high, ha_low, ha_close)`` arrays.
+    Returns:
+        Tuple of ``(ha_open, ha_high, ha_low, ha_close)`` arrays.
 
-    Raises
-    ------
-    ValueError
-        If arrays are empty or have mismatched lengths.
+    Raises:
+        ValueError: If arrays are empty or have mismatched lengths.
     """
     lengths = {len(open_), len(high), len(low), len(close)}
     if len(lengths) != 1:
-        raise ValueError(
-            f"All arrays must have the same length, got {sorted(lengths)}"
-        )
+        raise ValueError(f"All arrays must have the same length, got {sorted(lengths)}")
     if len(open_) == 0:
         raise ValueError("Arrays must not be empty")
 
@@ -106,22 +88,15 @@ def heikinashi_arrays(
 def heikinashi(dataframe: pd.DataFrame) -> pd.DataFrame:
     """Convert an OHLC DataFrame to Heikin-Ashi candles.
 
-    Parameters
-    ----------
-    dataframe : pd.DataFrame
-        Must contain ``open``, ``high``, ``low``, ``close`` columns.
+    Args:
+        dataframe: Must contain ``open``, ``high``, ``low``, ``close`` columns.
 
-    Returns
-    -------
-    pd.DataFrame
+    Returns:
         DataFrame with Heikin-Ashi OHLC values and the same index.
 
-    Raises
-    ------
-    KeyError
-        If required columns are missing.
-    ValueError
-        If the dataframe is empty.
+    Raises:
+        KeyError: If required columns are missing.
+        ValueError: If the dataframe is empty.
     """
     missing = {"open", "high", "low", "close"} - set(dataframe.columns)
     if missing:

@@ -1,19 +1,23 @@
 # Security Policy
 
-## Supported versions
+## Reporting a Vulnerability
+
+If you discover a security vulnerability in freshmeat-heikinashi, please report it responsibly:
+
+1. **Do NOT** create a public GitHub issue
+2. Email: yalcin@webliyacelebi.com
+3. Include a description of the vulnerability, steps to reproduce, and potential impact
+
+We will respond as soon as possible.
+
+## Supported Versions
 
 | Version | Supported |
 |---------|-----------|
 | 0.1.x   | Yes       |
 
-## Reporting a vulnerability
+## Security Best Practices for Users
 
-If you discover a security vulnerability, please report it responsibly.
-
-**Do not open a public issue.** Instead, email [yalcin@webliyacelebi.com](mailto:yalcin@webliyacelebi.com) with:
-
-- Description of the vulnerability.
-- Steps to reproduce.
-- Potential impact.
-
-You will receive an acknowledgement within 48 hours. A fix will be prioritized and released as a patch version.
+1. Only install freshmeat-heikinashi from trusted sources (PyPI, GitHub)
+2. Keep freshmeat-heikinashi and its dependencies (NumPy, Numba, pandas) updated to the latest versions
+3. Validate input data before passing to the library

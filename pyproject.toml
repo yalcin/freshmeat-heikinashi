@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "freshmeat-heikinashi"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Fast Heikin-Ashi candle computation with Numba JIT acceleration."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
 authors = [
-    { name = "Yalçın Açıkyıldız", email = "yalcin@webliyacelebi.com" },
+    { name = "Yalçın AÇIKYILDIZ", email = "yalcin@webliyacelebi.com" },
 ]
 keywords = ["heikin-ashi", "trading", "numba", "technical-analysis"]
 classifiers = [
@@ -35,36 +35,55 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "pytest-benchmark",
-    "ruff",
+    "pytest-cov>=6.0",
+    "ruff>=0.11",
+    "pre-commit>=4.0",
 ]
 
 [project.urls]
 Homepage = "https://github.com/yalcin/freshmeat-heikinashi"
 Repository = "https://github.com/yalcin/freshmeat-heikinashi"
-Changelog = "https://github.com/yalcin/freshmeat-heikinashi/blob/main/CHANGELOG.md"
 Issues = "https://github.com/yalcin/freshmeat-heikinashi/issues"
+Changelog = "https://github.com/yalcin/freshmeat-heikinashi/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/freshmeat_heikinashi"]
 
-[tool.hatch.build.targets.sdist]
-include = [
-    "src/",
-    "tests/",
-    "benchmarks/",
-    "LICENSE",
-    "NOTICE",
-    "README.md",
-    "CHANGELOG.md",
-    "pyproject.toml",
-]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+[tool.hatch.version]
+path = "src/freshmeat_heikinashi/__init__.py"
 
 [tool.ruff]
 target-version = "py310"
 line-length = 99
+src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+select = [
+    "E", "W",    # pycodestyle
+    "F",         # pyflakes
+    "I",         # isort
+    "N",         # pep8-naming
+    "D",         # pydocstyle
+    "UP",        # pyupgrade
+    "S",         # bandit (security)
+    "B",         # bugbear
+    "A",         # builtins
+    "C4",        # comprehensions
+    "SIM",       # simplify
+    "RUF",       # ruff-specific
+]
+ignore = ["D100", "D104"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "D102", "D103"]
+"benchmarks/**/*.py" = ["S101", "D103"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=freshmeat_heikinashi --cov-report=term-missing"

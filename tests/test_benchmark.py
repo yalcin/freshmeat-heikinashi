@@ -18,6 +18,7 @@ from freshmeat_heikinashi import heikinashi as numba_heikinashi
 # Fixtures — shared OHLC datasets
 # ---------------------------------------------------------------------------
 
+
 def _make_ohlc(n: int, seed: int = 42) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
     close = 100.0 + rng.standard_normal(n).cumsum()
@@ -46,6 +47,7 @@ def ohlc_100k() -> pd.DataFrame:
 # Correctness — numba output must match technical/qtpylib output
 # ---------------------------------------------------------------------------
 
+
 class TestCorrectnessVsTechnical:
     """Verify that Numba results match the technical package exactly."""
 
@@ -54,16 +56,28 @@ class TestCorrectnessVsTechnical:
         tech_result = technical_heikinashi(ohlc_10k)
 
         pd.testing.assert_series_equal(
-            numba_result["open"], tech_result["open"], check_names=False, atol=1e-10,
+            numba_result["open"],
+            tech_result["open"],
+            check_names=False,
+            atol=1e-10,
         )
         pd.testing.assert_series_equal(
-            numba_result["high"], tech_result["high"], check_names=False, atol=1e-10,
+            numba_result["high"],
+            tech_result["high"],
+            check_names=False,
+            atol=1e-10,
         )
         pd.testing.assert_series_equal(
-            numba_result["low"], tech_result["low"], check_names=False, atol=1e-10,
+            numba_result["low"],
+            tech_result["low"],
+            check_names=False,
+            atol=1e-10,
         )
         pd.testing.assert_series_equal(
-            numba_result["close"], tech_result["close"], check_names=False, atol=1e-10,
+            numba_result["close"],
+            tech_result["close"],
+            check_names=False,
+            atol=1e-10,
         )
 
     def test_matches_qtpylib_vendor(self, ohlc_10k: pd.DataFrame) -> None:
@@ -71,22 +85,35 @@ class TestCorrectnessVsTechnical:
         qtpylib_result = qtpylib_heikinashi(ohlc_10k)
 
         pd.testing.assert_series_equal(
-            numba_result["open"], qtpylib_result["open"], check_names=False, atol=1e-10,
+            numba_result["open"],
+            qtpylib_result["open"],
+            check_names=False,
+            atol=1e-10,
         )
         pd.testing.assert_series_equal(
-            numba_result["high"], qtpylib_result["high"], check_names=False, atol=1e-10,
+            numba_result["high"],
+            qtpylib_result["high"],
+            check_names=False,
+            atol=1e-10,
         )
         pd.testing.assert_series_equal(
-            numba_result["low"], qtpylib_result["low"], check_names=False, atol=1e-10,
+            numba_result["low"],
+            qtpylib_result["low"],
+            check_names=False,
+            atol=1e-10,
         )
         pd.testing.assert_series_equal(
-            numba_result["close"], qtpylib_result["close"], check_names=False, atol=1e-10,
+            numba_result["close"],
+            qtpylib_result["close"],
+            check_names=False,
+            atol=1e-10,
         )
 
 
 # ---------------------------------------------------------------------------
 # Benchmarks — 1k / 10k / 100k rows, grouped for side-by-side comparison
 # ---------------------------------------------------------------------------
+
 
 class TestBenchmarkNumba:
     """freshmeat-heikinashi (Numba JIT)."""

@@ -12,15 +12,18 @@ from freshmeat_heikinashi import heikinashi, heikinashi_arrays
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture
 def sample_ohlc() -> pd.DataFrame:
     """Small deterministic OHLC dataset."""
-    return pd.DataFrame({
-        "open":  [10.0, 11.0, 12.0, 11.5, 13.0],
-        "high":  [12.0, 13.0, 14.0, 13.5, 15.0],
-        "low":   [ 9.0, 10.0, 11.0, 10.5, 12.0],
-        "close": [11.0, 12.0, 13.0, 12.5, 14.0],
-    })
+    return pd.DataFrame(
+        {
+            "open": [10.0, 11.0, 12.0, 11.5, 13.0],
+            "high": [12.0, 13.0, 14.0, 13.5, 15.0],
+            "low": [9.0, 10.0, 11.0, 10.5, 12.0],
+            "close": [11.0, 12.0, 13.0, 12.5, 14.0],
+        }
+    )
 
 
 def _reference_heikinashi(df: pd.DataFrame) -> pd.DataFrame:
@@ -54,6 +57,7 @@ def _reference_heikinashi(df: pd.DataFrame) -> pd.DataFrame:
 # Correctness
 # ---------------------------------------------------------------------------
 
+
 class TestHeikinashiDataFrame:
     """Tests for the DataFrame API."""
 
@@ -82,9 +86,14 @@ class TestHeikinashiDataFrame:
         assert (result["low"] <= result["close"]).all()
 
     def test_single_bar(self) -> None:
-        df = pd.DataFrame({
-            "open": [100.0], "high": [110.0], "low": [90.0], "close": [105.0],
-        })
+        df = pd.DataFrame(
+            {
+                "open": [100.0],
+                "high": [110.0],
+                "low": [90.0],
+                "close": [105.0],
+            }
+        )
         result = heikinashi(df)
         assert result["close"].iloc[0] == pytest.approx(101.25)
         assert result["open"].iloc[0] == pytest.approx(102.5)
@@ -118,7 +127,7 @@ class TestHeikinashiArrays:
 
     def test_accepts_float32_input(self) -> None:
         arr = np.array([1.0, 2.0, 3.0], dtype=np.float32)
-        ha_open, ha_high, ha_low, ha_close = heikinashi_arrays(arr, arr, arr, arr)
+        ha_open, _ha_high, _ha_low, _ha_close = heikinashi_arrays(arr, arr, arr, arr)
         assert ha_open.dtype == np.float64
 
     def test_large_array(self) -> None:
@@ -129,7 +138,7 @@ class TestHeikinashiArrays:
         high = np.maximum(open_, close) + rng.uniform(0, 1, n)
         low = np.minimum(open_, close) - rng.uniform(0, 1, n)
 
-        ha_open, ha_high, ha_low, ha_close = heikinashi_arrays(open_, high, low, close)
+        ha_open, ha_high, ha_low, _ha_close = heikinashi_arrays(open_, high, low, close)
         assert len(ha_open) == n
         assert np.all(ha_high >= ha_low)
 
@@ -137,6 +146,7 @@ class TestHeikinashiArrays:
 # ---------------------------------------------------------------------------
 # Error handling
 # ---------------------------------------------------------------------------
+
 
 class TestErrorHandling:
     """Tests for input validation."""

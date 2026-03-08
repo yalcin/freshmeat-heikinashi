@@ -16,3 +16,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PEP 561 `py.typed` marker for type checker support.
 - Correctness tests against `technical.candles.heikinashi` and `qtpylib.indicators.heikinashi`.
 - Comparative benchmarks (pytest-benchmark + CLI script).
+
+[0.1.0]: https://github.com/yalcin/freshmeat-heikinashi/releases/tag/v0.1.0
