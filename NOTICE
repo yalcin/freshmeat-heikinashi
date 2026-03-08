@@ -1,0 +1,8 @@
+freshmeat-heikinashi
+Copyright 2026 Yalçın Açıkyıldız
+
+Licensed under the Apache License, Version 2.0.
+
+This project implements the standard Heikin-Ashi candle formula using
+Numba JIT compilation. The formula itself is public domain and widely
+documented in technical analysis literature.

@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "freshmeat-heikinashi"
+version = "0.1.0"
+description = "Fast Heikin-Ashi candle computation with Numba JIT acceleration."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "Yalçın Açıkyıldız", email = "yalcin@webliyacelebi.com" },
+]
+keywords = ["heikin-ashi", "trading", "numba", "technical-analysis"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.24",
+    "numba>=0.58",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-benchmark",
+    "ruff",
+]
+
+[project.urls]
+Homepage = "https://github.com/yalcin/freshmeat-heikinashi"
+Repository = "https://github.com/yalcin/freshmeat-heikinashi"
+Changelog = "https://github.com/yalcin/freshmeat-heikinashi/blob/main/CHANGELOG.md"
+Issues = "https://github.com/yalcin/freshmeat-heikinashi/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/freshmeat_heikinashi"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/",
+    "tests/",
+    "benchmarks/",
+    "LICENSE",
+    "NOTICE",
+    "README.md",
+    "CHANGELOG.md",
+    "pyproject.toml",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 99
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
