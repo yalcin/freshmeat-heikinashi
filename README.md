@@ -54,6 +54,14 @@ class MyStrategy(IStrategy):
         return dataframe
 ```
 
+## Correctness
+
+Output is verified to be **bit-identical** (within `1e-10` tolerance) to both `technical.candles.heikinashi()` and `qtpylib.indicators.heikinashi()` across 1k, 10k, and 100k row datasets:
+
+```bash
+pytest tests/test_benchmark.py -k "TestCorrectnessVsTechnical" -v
+```
+
 ## Benchmark
 
 Latest local `pytest-benchmark` result on 100,000 OHLC rows (min time):

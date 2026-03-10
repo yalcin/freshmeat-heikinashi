@@ -48,66 +48,23 @@ def ohlc_100k() -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 
 
+def _assert_ohlc_equal(result: pd.DataFrame, expected: pd.DataFrame, atol: float = 1e-10) -> None:
+    for col in ("open", "high", "low", "close"):
+        pd.testing.assert_series_equal(result[col], expected[col], check_names=False, atol=atol)
+
+
 class TestCorrectnessVsTechnical:
-    """Verify that Numba results match the technical package exactly."""
+    """Verify that Numba results match the technical package at multiple scales."""
 
-    def test_matches_technical_candles(self, ohlc_10k: pd.DataFrame) -> None:
-        numba_result = numba_heikinashi(ohlc_10k)
-        tech_result = technical_heikinashi(ohlc_10k)
+    @pytest.mark.parametrize("rows", [1_000, 10_000, 100_000])
+    def test_matches_technical_candles(self, rows: int) -> None:
+        df = _make_ohlc(rows)
+        _assert_ohlc_equal(numba_heikinashi(df), technical_heikinashi(df))
 
-        pd.testing.assert_series_equal(
-            numba_result["open"],
-            tech_result["open"],
-            check_names=False,
-            atol=1e-10,
-        )
-        pd.testing.assert_series_equal(
-            numba_result["high"],
-            tech_result["high"],
-            check_names=False,
-            atol=1e-10,
-        )
-        pd.testing.assert_series_equal(
-            numba_result["low"],
-            tech_result["low"],
-            check_names=False,
-            atol=1e-10,
-        )
-        pd.testing.assert_series_equal(
-            numba_result["close"],
-            tech_result["close"],
-            check_names=False,
-            atol=1e-10,
-        )
-
-    def test_matches_qtpylib_vendor(self, ohlc_10k: pd.DataFrame) -> None:
-        numba_result = numba_heikinashi(ohlc_10k)
-        qtpylib_result = qtpylib_heikinashi(ohlc_10k)
-
-        pd.testing.assert_series_equal(
-            numba_result["open"],
-            qtpylib_result["open"],
-            check_names=False,
-            atol=1e-10,
-        )
-        pd.testing.assert_series_equal(
-            numba_result["high"],
-            qtpylib_result["high"],
-            check_names=False,
-            atol=1e-10,
-        )
-        pd.testing.assert_series_equal(
-            numba_result["low"],
-            qtpylib_result["low"],
-            check_names=False,
-            atol=1e-10,
-        )
-        pd.testing.assert_series_equal(
-            numba_result["close"],
-            qtpylib_result["close"],
-            check_names=False,
-            atol=1e-10,
-        )
+    @pytest.mark.parametrize("rows", [1_000, 10_000, 100_000])
+    def test_matches_qtpylib_vendor(self, rows: int) -> None:
+        df = _make_ohlc(rows)
+        _assert_ohlc_equal(numba_heikinashi(df), qtpylib_heikinashi(df))
 
 
 # ---------------------------------------------------------------------------
